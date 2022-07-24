@@ -1,22 +1,118 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  static const String _title = 'Flutter Code Sample';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-      
-        primarySwatch: Colors.blue,
+      title: _title,
+      color: const Color.fromARGB(10, 255, 255, 255),
+      home: Scaffold(
+        appBar: AppBar(title: const Text(_title)),
+        body: const MyHomePage(title: 'ㅁㄴㅇㄹ',),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+class MyStateFulWidget extends StatefulWidget {
+  const MyStateFulWidget({Key? key}) : super(key: key);
+
+  @override
+  State<MyStateFulWidget> createState() => _MyStateFulWidgetState();
+}
+
+class _MyStateFulWidgetState extends State<MyStateFulWidget> {
+  int sizeValue = 0;
+ 
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Center(
+      child: ElevatedButton(
+        child: const Text('showModalBottomSheet'),
+        onPressed: () {
+         showModalBottomSheet<void>(
+                  isScrollControlled: true,
+                  barrierColor: const Color.fromARGB(0, 255, 255, 255),
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: sizeValue == 0? size.height*0.3 : size.height*0.5 ,
+                      color: Colors.amber,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            const Text('Modal BottomSheet'),
+                            ElevatedButton(
+                              onPressed:() {
+                                setState(() {
+                                  sizeValue = 1;
+                                });
+                              },
+                              child: const Text('위로')),
+                            ElevatedButton(
+                              onPressed: (() {
+                                Navigator.pop(context);
+                                setState(() {
+                                  sizeValue = 0;
+                                });
+                              }),
+                              child: const Text('Close BottomSheet')
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+        },
+      ),
+    );
+  }
+}
+
+class MyStatelessWidget extends StatelessWidget {
+  const MyStatelessWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Center(
+      child: ElevatedButton(
+        child: const Text('showModalBottomSheet'),
+        onPressed: () {
+          showModalBottomSheet<void>(
+            barrierColor: const Color.fromARGB(0, 255, 255, 255),
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                height:  size.height*0.3,
+                color: Colors.amber,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Text('Modal BottomSheet'),
+                      ElevatedButton(
+                        child: const Text('Close BottomSheet'),
+                        onPressed: () => Navigator.pop(context),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -29,15 +125,17 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-
 class _MyHomePageState extends State<MyHomePage> {
     int value = 2;
   @override
   Widget build(BuildContext context) {
   Size size = MediaQuery.of(context).size;
-    print(size);
-    return Scaffold(appBar: AppBar(title: const Text("dkldkdk")),body: Stack(
+    return Scaffold(appBar: AppBar(title: const Text("dkldkdk")),
+    body: Stack(
+      
       children: [
+        Container(color: Colors.amber),
+
           Center(
             child: InkWell(
               onTap: () {
@@ -58,6 +156,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   )),
             ),
           ),
+        value >= 3? Container(color: Colors.black54): Container(),
+
           AnimatedContainer(
             transform: Matrix4.translationValues(
                 0,
