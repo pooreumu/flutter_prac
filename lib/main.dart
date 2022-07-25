@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
       color: const Color.fromARGB(10, 255, 255, 255),
       home: Scaffold(
         appBar: AppBar(title: const Text(_title)),
-        body: const MyHomePage(title: 'ㅁㄴㅇㄹ',),
+        body: const SampleWidget(),
       ),
     );
   }
@@ -215,5 +217,58 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
     ),);
+  }
+}
+
+
+class SampleWidget extends StatefulWidget {
+  const SampleWidget({Key? key}) : super(key: key);
+
+  @override
+  State<SampleWidget> createState() => _SampleWidgetState();
+}
+
+class _SampleWidgetState extends State<SampleWidget> {
+   final List<Map> _products = List.generate(
+      100,
+      (index) => {
+            "id": index,
+            "name": "Product $index",
+            "price": Random().nextInt(100)
+          }).toList();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('KindaCode.com'),
+      ),
+      body: GridView.builder(
+          padding: const EdgeInsets.all(10),
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 200,
+              childAspectRatio: 2 / 3,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20),
+          itemCount: _products.length,
+          itemBuilder: (BuildContext ctx, index) {
+            return GridTile(
+              key: ValueKey(_products[index]['id']),
+              footer: GridTileBar(
+                backgroundColor: Colors.black54,
+                title: Text(
+                  _products[index]['name'],
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text("\$${_products[index]['price'].toString()}"),
+                trailing: const Icon(Icons.shopping_cart),
+              ),
+              child: Image.network(
+                'https://www.kindacode.com/wp-content/uploads/2021/12/phone.jpeg',
+                fit: BoxFit.cover,
+              ),
+            );
+          }),
+    );
   }
 }
